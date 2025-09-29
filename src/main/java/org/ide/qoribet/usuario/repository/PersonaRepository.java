@@ -1,4 +1,4 @@
 package org.ide.qoribet.usuario.repository;
 
-public interface UsuarioRepository {
+public interface PersonaRepository {
 }

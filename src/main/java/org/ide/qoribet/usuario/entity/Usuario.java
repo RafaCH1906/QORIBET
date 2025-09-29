@@ -1,68 +1,53 @@
 package org.ide.qoribet.usuario.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.ide.qoribet.common.enums.usuario.EstadoUsuario;
+import org.ide.qoribet.common.enums.usuario.Rol;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-@Entity
+import java.time.LocalDateTime;
+
 @Table(name = "usuarios")
-@Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
+@Entity
 @Builder
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @NotBlank
-    private String nombre;
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "persona_id", nullable = false)
+    private Persona persona;
 
-    @Email
-    @NotBlank
-    @Column(unique = true, nullable = false)
-    private String email;
+    @NotNull
+    @Column(nullable = false, unique = true)
+    private String username;
 
-    @NotBlank
-    private String password;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Rol rol;
 
-    private double saldo= 0.0;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "fecha_registro", nullable = false, updatable = false)
-    private Date fechaRegistro = new Date();
+    @NotNull
+    @Column(nullable = false, unique = true)
+    private String correo;
 
-    private String estado = "ACTIVO";
+    @NotNull
+    @Column(nullable = false)
+    private String password_hash;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private Lisst<Apuesta> apuestas;
+    @NotNull
+    @Column(nullable = false, name = "fecha_registro")
+    private LocalDateTime fechaRegistro;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<Transaccion> transacciones;
-
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "usuario_bono",
-            joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "bono_id")
-    )
-    private Set<BonoPromocion> bonos;
-
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "usuario_juego",
-            joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "juego_id")
-    )
-    private Set<JuegoAzar> juegosAzar;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoUsuario estado;
 
 }
-

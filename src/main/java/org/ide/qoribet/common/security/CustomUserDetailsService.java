@@ -1,6 +1,5 @@
 package org.ide.qoribet.common.security;
 
-// Servicio personalizado para cargar los detalles de usuario desde la base de datos
 import org.ide.qoribet.usuario.entity.Usuario;
 import org.ide.qoribet.usuario.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;

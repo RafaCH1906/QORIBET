@@ -35,16 +35,14 @@ public class ApuestaService {
     public ApuestaDTO crearApuesta(ApuestaDTO dto) {
         validarApuesta(dto);
         Apuesta entity = toEntity(dto);
-        entity.setFechaCreacion(LocalDateTime.now());
+        entity.setFecha(LocalDateTime.now());
         entity.setEstado(EstadoApuesta.PENDIENTE);
         entity = apuestaRepository.save(entity);
 
         ApuestaDTO resultado = toDTO(entity);
 
-        Usuario usuario = usuarioRepository.findById(dto.getUsuarioId()).orElse(null);
-        if (usuario != null) {
-            apuestaAsyncService.procesarApuestaCompleta(resultado, usuario.getCorreo());
-        }
+        usuarioRepository.findById(dto.getUsuarioId())
+            .ifPresent(usuario -> apuestaAsyncService.procesarApuestaCompleta(resultado, usuario.getCorreo()));
 
         return resultado;
     }
@@ -128,7 +126,7 @@ public class ApuestaService {
 
         // Si se especifica una opción en las selecciones, usar la primera
         if (dto.getSelecciones() != null && !dto.getSelecciones().isEmpty()) {
-            Long opcionId = dto.getSelecciones().getFirst().getOpcionId();
+            Long opcionId = dto.getSelecciones().get(0).getOpcionId();
             if (opcionId != null) {
                 entity.setOpcion(opcionRepository.findById(opcionId)
                         .orElseThrow(() -> new ApuestaValidationException("Opción no encontrada")));

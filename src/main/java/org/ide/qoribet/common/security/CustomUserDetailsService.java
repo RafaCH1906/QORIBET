@@ -16,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    // Método que busca el usuario por su username y lo adapta a UserDetails
+    // Metodo que busca el usuario por su username y lo adapta a UserDetails
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByUsername(username)

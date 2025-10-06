@@ -27,7 +27,7 @@ public class SaldoDigitalController {
         return ResponseEntity.ok(nuevoSaldo);
     }
 
-    // 🚀 NUEVO: Procesar depósito con procesamiento asíncrono
+    //  Procesar depósito con procesamiento asíncrono
     @PostMapping("/{id}/deposito")
     @PreAuthorize("hasAnyRole('ADMIN','JUGADOR','MODERADOR')")
     public ResponseEntity<String> procesarDeposito(@PathVariable Long id,
@@ -38,7 +38,7 @@ public class SaldoDigitalController {
         return ResponseEntity.ok("Depósito iniciado. Recibirás una notificación cuando se complete.");
     }
 
-    // 🚀 NUEVO: Procesar retiro con validaciones complejas asíncronas
+    //  Procesar retiro con validaciones complejas asíncronas
     @PostMapping("/{id}/retiro")
     @PreAuthorize("hasAnyRole('ADMIN','JUGADOR','MODERADOR')")
     public ResponseEntity<String> procesarRetiro(@PathVariable Long id, @RequestParam String monto) {
